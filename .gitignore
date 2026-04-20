@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Data artefactos — reproducibles desde ingesta
+data/*.duckdb
+data/*.duckdb.wal
+raw/
+
+# Extracciones
+Ceipa_extracted/
+
+# Logs
+*.log
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
