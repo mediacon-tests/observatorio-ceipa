@@ -1,0 +1,1345 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Propuesta Técnica — Observatorio CEIPA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --accent: #A8322D;
+  --text: #111111;
+  --muted: #55524A;
+  --soft: #8A8578;
+  --border: #D6CEBE;
+  --rule: #1A1A1A;
+  --bg-code: #F7F5F0;
+}
+
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm 18mm;
+  @top-left {
+    content: "Propuesta técnica · Observatorio CEIPA";
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 8pt;
+    color: #888;
+    padding-top: 8mm;
+  }
+  @top-right {
+    content: counter(page) " / " counter(pages);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8pt;
+    color: #888;
+    padding-top: 8mm;
+  }
+  @bottom-center {
+    content: "CEIPA · Cámara Empresarial Industria Petrolera y Afines del Neuquén";
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 7.5pt;
+    color: #aaa;
+  }
+}
+
+@page :first {
+  margin: 0;
+  @top-left { content: none; }
+  @top-right { content: none; }
+  @bottom-center { content: none; }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  font-family: 'IBM Plex Serif', Georgia, serif;
+  font-size: 10.5pt;
+  line-height: 1.52;
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+/* ========== Cover ========== */
+.cover {
+  page-break-after: always;
+  height: 297mm;
+  padding: 35mm 25mm 25mm 25mm;
+  background: linear-gradient(180deg, #FAF6EF 0%, #FFFFFF 100%);
+  position: relative;
+}
+.cover .kicker {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 10pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10mm;
+}
+.cover h1 {
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 12mm 0;
+}
+.cover .subtitle {
+  font-family: 'IBM Plex Serif', serif;
+  font-style: italic;
+  font-size: 15pt;
+  line-height: 1.35;
+  color: var(--muted);
+  max-width: 150mm;
+  margin-bottom: 40mm;
+}
+.cover .meta {
+  border-top: 2px solid var(--rule);
+  padding-top: 8mm;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 9pt;
+}
+.cover .meta .block {
+  display: flex; flex-direction: column;
+}
+.cover .meta .label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 7.5pt;
+  color: var(--muted);
+  margin-bottom: 2mm;
+}
+.cover .meta .value { font-size: 10pt; color: var(--text); font-weight: 500; }
+
+.cover .brand {
+  position: absolute;
+  bottom: 20mm; left: 25mm;
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 16pt;
+  letter-spacing: -0.02em;
+}
+.cover .brand::before {
+  content: "";
+  display: inline-block;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent);
+  margin-right: 8px;
+  transform: translateY(-2px);
+}
+
+/* ========== Tipografía principal ========== */
+h1, h2, h3, h4 {
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0;
+  page-break-after: avoid;
+}
+
+h1.section {
+  font-size: 24pt;
+  line-height: 1.1;
+  margin: 0 0 4mm 0;
+  padding-bottom: 3mm;
+  border-bottom: 2px solid var(--rule);
+  page-break-before: always;
+}
+h1.section .num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  color: var(--accent);
+  margin-right: 8mm;
+  font-size: 18pt;
+}
+
+h2 {
+  font-size: 14pt;
+  margin: 9mm 0 3mm 0;
+}
+h2 .num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  color: var(--accent);
+  font-size: 11pt;
+  margin-right: 5mm;
+}
+
+h3 {
+  font-size: 11pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  margin: 6mm 0 2mm 0;
+}
+
+.deck {
+  font-family: 'IBM Plex Serif', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 11pt;
+  line-height: 1.5;
+  margin: 0 0 6mm 0;
+}
+
+p { margin: 0 0 3mm 0; text-align: justify; hyphens: auto; }
+
+strong { font-weight: 600; color: var(--text); }
+em { font-style: italic; }
+
+ul, ol {
+  margin: 2mm 0 3mm 0;
+  padding-left: 6mm;
+}
+li { margin-bottom: 1.5mm; }
+
+code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9pt;
+  background: var(--bg-code);
+  padding: 0.5mm 1.5mm;
+  border-radius: 2px;
+  color: var(--text);
+}
+
+pre {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5pt;
+  background: var(--bg-code);
+  padding: 3mm 4mm;
+  border-left: 2px solid var(--accent);
+  line-height: 1.4;
+  margin: 3mm 0 4mm 0;
+  overflow-x: hidden;
+  page-break-inside: avoid;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 3mm 0 5mm 0;
+  font-size: 9.5pt;
+  font-family: 'IBM Plex Sans', sans-serif;
+  page-break-inside: avoid;
+}
+thead th {
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: left;
+  padding: 2mm 2.5mm;
+  border-bottom: 1.5pt solid var(--rule);
+  border-top: 1.5pt solid var(--rule);
+}
+tbody td {
+  padding: 1.8mm 2.5mm;
+  border-bottom: 0.5pt solid var(--border);
+  vertical-align: top;
+}
+tbody td.num { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; text-align: right; }
+
+.callout {
+  background: #FBF3F1;
+  border-left: 3px solid var(--accent);
+  padding: 4mm 5mm;
+  margin: 4mm 0;
+  font-family: 'IBM Plex Serif', serif;
+  font-style: italic;
+  color: var(--muted);
+  page-break-inside: avoid;
+}
+.callout strong { font-style: normal; color: var(--text); }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6mm;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3mm;
+  margin: 4mm 0;
+  page-break-inside: avoid;
+}
+.stat {
+  border-top: 1.5pt solid var(--rule);
+  padding: 3mm 2mm 2mm 0;
+}
+.stat .label {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 7pt;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 1.5mm;
+}
+.stat .value {
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 20pt;
+  line-height: 1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.stat .unit {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 9pt;
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 1mm;
+}
+
+.toc {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10pt;
+  line-height: 1.8;
+}
+.toc .entry {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.5pt dotted var(--border);
+  padding: 1.2mm 0;
+}
+.toc .entry .num {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--accent);
+  min-width: 10mm;
+  font-weight: 500;
+}
+.toc .entry .title { flex: 1; margin-left: 3mm; }
+.toc .entry .page {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9pt;
+  color: var(--muted);
+}
+
+/* SVG diagramas */
+.figure {
+  margin: 4mm 0 6mm 0;
+  page-break-inside: avoid;
+}
+.figure svg {
+  width: 100%;
+  height: auto;
+  max-width: 170mm;
+}
+.figure .caption {
+  font-family: 'IBM Plex Sans', serif;
+  font-style: italic;
+  font-size: 8.5pt;
+  color: var(--muted);
+  margin-top: 2mm;
+  text-align: left;
+}
+.figure .caption strong {
+  font-style: normal;
+  color: var(--text);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 3mm;
+}
+
+.pagebreak { page-break-after: always; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="kicker">Propuesta técnica · Desarrollo de software</div>
+  <h1>Observatorio CEIPA</h1>
+  <div class="subtitle">Sistema integral de inteligencia de datos para la cadena de servicios
+  petroleros de Vaca Muerta. Arquitectura, metodología, cronograma y esfuerzo.</div>
+  <div class="meta">
+    <div class="block"><span class="label">Dirigido a</span>
+      <span class="value">Cámara Empresarial Industria Petrolera<br>y Afines del Neuquén</span></div>
+    <div class="block"><span class="label">Fecha</span>
+      <span class="value">20 de abril de 2026</span></div>
+    <div class="block"><span class="label">Versión</span>
+      <span class="value">1.0 · Borrador</span></div>
+  </div>
+  <div class="brand">CEIPA · Observatorio</div>
+</div>
+
+
+<div>
+  <h1 class="section" style="border-bottom:none; page-break-before: avoid;">
+    <span class="num">——</span>Índice
+  </h1>
+  <div class="toc"><div class="entry"><span class="num">1</span><span class="title">Resumen ejecutivo</span><span class="page">p. 3</span></div><div class="entry"><span class="num">2</span><span class="title">Contexto y problema</span><span class="page">p. 5</span></div><div class="entry"><span class="num">3</span><span class="title">Objetivos y alcance</span><span class="page">p. 7</span></div><div class="entry"><span class="num">4</span><span class="title">Arquitectura técnica</span><span class="page">p. 9</span></div><div class="entry"><span class="num">5</span><span class="title">Estrategia de datos y fuentes</span><span class="page">p. 11</span></div><div class="entry"><span class="num">6</span><span class="title">Modelo dimensional</span><span class="page">p. 13</span></div><div class="entry"><span class="num">7</span><span class="title">Metodología analítica</span><span class="page">p. 15</span></div><div class="entry"><span class="num">8</span><span class="title">Capa de presentación</span><span class="page">p. 17</span></div><div class="entry"><span class="num">9</span><span class="title">Calidad, testing y observabilidad</span><span class="page">p. 19</span></div><div class="entry"><span class="num">10</span><span class="title">Seguridad y gobernanza</span><span class="page">p. 21</span></div><div class="entry"><span class="num">11</span><span class="title">Cronograma y entregables</span><span class="page">p. 23</span></div><div class="entry"><span class="num">12</span><span class="title">Esfuerzo, equipo y sostenibilidad</span><span class="page">p. 25</span></div><div class="entry"><span class="num">13</span><span class="title">Riesgos y mitigación</span><span class="page">p. 27</span></div><div class="entry"><span class="num">14</span><span class="title">Conclusión</span><span class="page">p. 29</span></div></div>
+</div>
+<div class="pagebreak"></div>
+
+
+<h1 class="section"><span class="num">01</span>Resumen ejecutivo</h1>
+<p class="deck">Propuesta de construcción del <em>Observatorio CEIPA</em>: un sistema integral de
+inteligencia de datos para la cadena de servicios petroleros de Vaca Muerta,
+diseñado para anticipar cambios de actividad, optimizar decisiones operativas
+y fortalecer la posición negociadora institucional de la Cámara.</p>
+
+<p>Las pymes proveedoras del sector energético argentino operan en un contexto
+de alta volatilidad, presión sobre costos y baja previsibilidad de la demanda.
+A pesar de la abundancia de datos operativos, laborales y contractuales, la
+información está <strong>fragmentada</strong> y <strong>subutilizada</strong> para decisiones estratégicas.
+Esta propuesta plantea construir, en seis meses, una plataforma que consolide
+todas las fuentes públicas disponibles, las transforme en indicadores accionables
+y las entregue a través de un dashboard de clase profesional y reportes
+auto-generados.</p>
+
+<div class="stat-row">
+  <div class="stat"><div class="label">Fuentes oficiales</div><div class="value">20<span class="unit">+</span></div></div>
+  <div class="stat"><div class="label">Series de datos</div><div class="value">590<span class="unit">K obs</span></div></div>
+  <div class="stat"><div class="label">Horizonte del proyecto</div><div class="value">6<span class="unit">meses</span></div></div>
+  <div class="stat"><div class="label">Fases</div><div class="value">5<span class="unit">+1</span></div></div>
+</div>
+
+<h2><span class="num">1.1</span>Qué entregamos</h2>
+<ul>
+  <li><strong>Observatorio público</strong> con 13 secciones analíticas, incluyendo un índice
+  propio — <em>IAP-CEIPA</em> — que consolida en un solo número la demanda de
+  servicios de estimulación hidráulica y logística.</li>
+  <li><strong>Plataforma de datos reproducible</strong> con pipeline de ingesta automatizado
+  y warehouse analítico; cada dato mostrado es trazable a su fuente oficial.</li>
+  <li><strong>Modelo predictivo a 12 meses</strong> con tres escenarios (base, optimista,
+  pesimista) y backtest documentado.</li>
+  <li><strong>Mapa geoespacial interactivo</strong> con 84.000+ pozos, permisos de exploración
+  y sísmicas registradas.</li>
+  <li><strong>Reportes mensuales automáticos</strong> en PDF y exportación granular a CSV.</li>
+  <li><strong>Capa privada de benchmarking</strong> (fase 2) que permite a cada socio comparar
+  sus indicadores contra el sector preservando la confidencialidad.</li>
+</ul>
+
+<h2><span class="num">1.2</span>Valor diferencial</h2>
+<p>El equipo propuesto combina <strong>ciencias sociales</strong> (comprensión de dinámicas
+sectoriales, laborales e institucionales) y <strong>desarrollo tecnológico</strong>
+(plataformas de datos, modelos predictivos, diseño de producto). Esto nos
+permite no solo procesar datos sino <em>traducirlos en decisiones estratégicas
+concretas</em> adecuadas al perfil de la Cámara.</p>
+
+<div class="callout">
+  <strong>Qué NO es esta propuesta.</strong> No es una consultora que entrega un reporte
+  estático. No es un sistema cerrado que requiere dependencia perpetua del
+  proveedor. Al finalizar las cinco fases, CEIPA posee el código fuente,
+  la documentación metodológica completa y el know-how operativo para sostener
+  el Observatorio con 1 analista part-time.
+</div>
+
+<h1 class="section"><span class="num">02</span>Contexto y problema</h1>
+<p class="deck">Tres asimetrías estructurales definen el problema de información
+que enfrentan los proveedores del upstream argentino.</p>
+
+<h2><span class="num">2.1</span>El problema real</h2>
+<p>Las empresas proveedoras de servicios petroleros en la cuenca Neuquina
+operan bajo <strong>tres asimetrías</strong> que el mercado no resuelve por sí solo:</p>
+
+<ol>
+  <li><strong>Asimetría vertical de información.</strong> Las operadoras
+  (YPF, Vista, Pampa Energía, Shell, Chevron, Tecpetrol, TotalEnergies) conocen
+  su pipeline de inversión a 12-24 meses; los proveedores lo ven con 3-6 meses
+  de rezago, cuando ya es tarde para planificar capacidad.</li>
+  <li><strong>Asimetría contractual.</strong> Cadena de pagos de 60 a 120 días
+  y poder de negociación desbalanceado por la concentración de demanda.</li>
+  <li><strong>Asimetría laboral-paritaria.</strong> Los costos se negocian
+  en bloque con Petroleros Privados (CCT 644/12) pero impactan diferencialmente
+  según el perfil de cada empresa. La Cámara no cuenta con herramientas
+  cuantitativas para simular escenarios en tiempo real durante la ronda.</li>
+</ol>
+
+<h2><span class="num">2.2</span>Por qué ahora</h2>
+<p>Vaca Muerta atraviesa una fase de <strong>consolidación acelerada</strong>:
+longitud promedio de rama horizontal pasó de 1.200 m en 2014 a ~3.000 m en 2024,
+las inversiones anunciadas superan los USD 10.000M anuales y el país se prepara
+para ser exportador neto de gas. Simultáneamente, el ecosistema informacional
+argentino publica hoy — por primera vez — volúmenes de datos abiertos
+auditables suficientes para construir un observatorio riguroso sin necesidad
+de fuentes pagas.</p>
+
+<p>La ventana de oportunidad combina: <em>disponibilidad de datos abiertos</em> +
+<em>necesidad institucional clara</em> + <em>madurez de tecnologías de datos</em> +
+<em>fase de crecimiento estructural del sector</em>. Postergar el proyecto significa
+dejar que cada empresa socia construya versiones parciales y fragmentadas
+de lo mismo, duplicando esfuerzo y sin poder de síntesis institucional.</p>
+
+<h2><span class="num">2.3</span>Stakeholders</h2>
+<table>
+  <thead>
+    <tr><th>Actor</th><th>Rol</th><th>Interés principal</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Comisión Directiva CEIPA</td><td>Sponsor institucional</td><td>Posicionamiento ante medios, gobierno, operadoras</td></tr>
+    <tr><td>Empresas socias</td><td>Usuarios primarios</td><td>Anticipación de demanda, benchmarking, paritarias</td></tr>
+    <tr><td>Secretaría de Energía / Provincia Neuquén</td><td>Interlocutores</td><td>Visión consolidada del sector proveedor</td></tr>
+    <tr><td>Operadoras (YPF, Vista, etc.)</td><td>Contrapartes</td><td>Diálogo informado sobre capacidad instalada proveedora</td></tr>
+    <tr><td>Sindicato Petroleros Privados</td><td>Contraparte paritaria</td><td>Referencia cuantitativa compartida</td></tr>
+    <tr><td>Medios y academia</td><td>Difusores</td><td>Fuente autoritativa citable</td></tr>
+  </tbody>
+</table>
+
+<h1 class="section"><span class="num">03</span>Objetivos y alcance</h1>
+<p class="deck">Cuatro objetivos funcionales organizan el producto;
+un alcance deliberadamente acotado protege la entregabilidad.</p>
+
+<h2><span class="num">3.1</span>Objetivos funcionales</h2>
+<ol>
+  <li><strong>Anticipar</strong> cambios de actividad con indicadores adelantados
+  (sísmicas, permisos, etapas de fractura, DUC wells).</li>
+  <li><strong>Optimizar</strong> decisiones operativas de socios vía benchmarking
+  anónimo y comparación sectorial.</li>
+  <li><strong>Mejorar competitividad</strong> con inteligencia laboral, análisis
+  de costos y simuladores de escenarios paritarios.</li>
+  <li><strong>Fortalecer</strong> la capacidad de negociación institucional de
+  CEIPA ante operadoras, gobierno y sindicato con una fuente de datos
+  única, reproducible y autoritativa.</li>
+</ol>
+
+<h2><span class="num">3.2</span>Alcance</h2>
+<h3>Dentro de alcance</h3>
+<ul>
+  <li>Ingesta automatizada de al menos 20 fuentes públicas argentinas y 1 internacional (World Bank).</li>
+  <li>Warehouse analítico en DuckDB con al menos 12 <em>marts</em> documentados.</li>
+  <li>Dashboard con 13 secciones cubriendo: resumen, actividad, producción, GIS, empleo, precios, forecast, catálogo.</li>
+  <li>Índice IAP-CEIPA construido, publicado mensualmente y metodológicamente documentado.</li>
+  <li>Modelo predictivo SARIMAX + Prophet + XGBoost con tres escenarios y backtest.</li>
+  <li>Reportes mensuales en PDF y export CSV por sección.</li>
+  <li>Capa privada con autenticación y benchmarking anónimo para socios.</li>
+  <li>Documentación completa, tests automatizados y traspaso a equipo CEIPA.</li>
+</ul>
+
+<h3>Fuera de alcance</h3>
+<ul>
+  <li>Fuentes pagas (Rystad, S&amp;P Platts, Wood Mackenzie).</li>
+  <li>Integraciones con sistemas contables o ERP de empresas socias.</li>
+  <li>Compra y análisis de imágenes satelitales en fase inicial (considerado en roadmap 12m).</li>
+  <li>Publicación de datos sensibles individuales de empresa (privacidad diferencial protege lo contrario).</li>
+</ul>
+
+    <h1 class="section"><span class="num">04</span>Arquitectura técnica</h1>
+    <p class="deck">Stack pragmático de bajo costo operativo, orientado a
+    reproducibilidad y sostenibilidad a largo plazo con mínima dependencia
+    del proveedor original.</p>
+
+    <h2><span class="num">4.1</span>Principios rectores</h2>
+    <ul>
+      <li><strong>Código sobre configuración.</strong> Todo lo que define el sistema
+      — fuentes, transformaciones, paleta, indicadores — vive en Python/SQL versionado en git.</li>
+      <li><strong>Reproducibilidad total.</strong> Cualquier dato mostrado es regenerable
+      desde cero con <code>python -m src.ingest</code>.</li>
+      <li><strong>Bajo costo operativo.</strong> Todo corre en un VPS de USD 20-40/mes
+      o en infraestructura existente de CEIPA.</li>
+      <li><strong>Dependencia mínima del proveedor.</strong> Stack open-source estándar
+      mantenible por cualquier Python developer con experiencia básica en datos.</li>
+      <li><strong>Separación de capas.</strong> Ingesta, warehouse, transformación y
+      presentación son módulos independientes y testeables.</li>
+    </ul>
+
+    <h2><span class="num">4.2</span>Vista general</h2>
+    <div class="figure">
+
+<svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Sans, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B4E2E"/>
+    </marker>
+  </defs>
+
+  <!-- columnas de fondo -->
+  <g font-size="10" font-weight="700" fill="#A8322D" text-anchor="middle" letter-spacing="0.08em">
+    <text x="95" y="25">FUENTES</text>
+    <text x="260" y="25">INGESTA</text>
+    <text x="425" y="25">WAREHOUSE</text>
+    <text x="615" y="25">PRESENTACIÓN</text>
+  </g>
+  <g stroke="#D6CEBE" stroke-width="0.5">
+    <line x1="175" y1="15" x2="175" y2="400"/>
+    <line x1="345" y1="15" x2="345" y2="400"/>
+    <line x1="510" y1="15" x2="510" y2="400"/>
+  </g>
+
+  <!-- Fuentes -->
+  <g font-size="9" fill="#111">
+    <rect x="20" y="50"  width="150" height="32" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="95" y="66" text-anchor="middle" font-weight="600">Sec. Energía CKAN</text>
+    <text x="95" y="76" text-anchor="middle" font-size="7.5" fill="#55524A">12 datasets · 590K filas</text>
+
+    <rect x="20" y="95"  width="150" height="32" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="95" y="111" text-anchor="middle" font-weight="600">BCRA API v4</text>
+    <text x="95" y="121" text-anchor="middle" font-size="7.5" fill="#55524A">7 series · 10K obs diarias</text>
+
+    <rect x="20" y="140" width="150" height="32" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="95" y="156" text-anchor="middle" font-weight="600">INDEC / SSPM</text>
+    <text x="95" y="166" text-anchor="middle" font-size="7.5" fill="#55524A">12 series (empleo, precios)</text>
+
+    <rect x="20" y="185" width="150" height="32" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="95" y="201" text-anchor="middle" font-weight="600">World Bank</text>
+    <text x="95" y="211" text-anchor="middle" font-size="7.5" fill="#55524A">Pink Sheet · commodities</text>
+
+    <rect x="20" y="230" width="150" height="32" fill="#FBF3F1" stroke="#A8322D" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="95" y="246" text-anchor="middle" font-weight="600">Carga privada</text>
+    <text x="95" y="256" text-anchor="middle" font-size="7.5" fill="#A8322D">Fase 2 · por empresa</text>
+  </g>
+
+  <!-- Ingesta -->
+  <g font-size="9" fill="#111">
+    <rect x="190" y="80" width="150" height="72" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="265" y="96" text-anchor="middle" font-weight="600">Pipeline Python</text>
+    <text x="265" y="112" text-anchor="middle" font-size="7.5" fill="#55524A">requests · pandas</text>
+    <text x="265" y="124" text-anchor="middle" font-size="7.5" fill="#55524A">reintentos · dedup</text>
+    <text x="265" y="136" text-anchor="middle" font-size="7.5" fill="#55524A">schema validation</text>
+
+    <rect x="190" y="175" width="150" height="54" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="265" y="191" text-anchor="middle" font-weight="600">Transformación</text>
+    <text x="265" y="205" text-anchor="middle" font-size="7.5" fill="#55524A">SQL (DuckDB views)</text>
+    <text x="265" y="217" text-anchor="middle" font-size="7.5" fill="#55524A">raw → marts</text>
+  </g>
+
+  <!-- Warehouse -->
+  <g font-size="9" fill="#111">
+    <rect x="360" y="60"  width="140" height="36" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="430" y="76" text-anchor="middle" font-weight="600">raw_*</text>
+    <text x="430" y="88" text-anchor="middle" font-size="7.5" fill="#55524A">Bronze · tal cual</text>
+
+    <rect x="360" y="108" width="140" height="36" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="430" y="124" text-anchor="middle" font-weight="600">mart_*</text>
+    <text x="430" y="136" text-anchor="middle" font-size="7.5" fill="#55524A">Silver · tipados</text>
+
+    <rect x="360" y="156" width="140" height="36" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="430" y="172" text-anchor="middle" font-weight="600">mart_iap_ceipa</text>
+    <text x="430" y="184" text-anchor="middle" font-size="7.5" fill="#55524A">Gold · indicadores</text>
+
+    <rect x="360" y="204" width="140" height="36" fill="#FBF3F1" stroke="#A8322D" stroke-width="1"/>
+    <text x="430" y="220" text-anchor="middle" font-weight="600">mart_iap_forecast</text>
+    <text x="430" y="232" text-anchor="middle" font-size="7.5" fill="#A8322D">12m · 3 escenarios</text>
+
+    <rect x="380" y="260" width="100" height="20" fill="none" stroke="#111" stroke-width="0.6"/>
+    <text x="430" y="273" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8">DuckDB</text>
+  </g>
+
+  <!-- Presentación -->
+  <g font-size="9" fill="#111">
+    <rect x="525" y="60"  width="175" height="36" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="612" y="76" text-anchor="middle" font-weight="600">Dashboard público</text>
+    <text x="612" y="88" text-anchor="middle" font-size="7.5" fill="#55524A">Streamlit · 13 secciones</text>
+
+    <rect x="525" y="108" width="175" height="36" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="612" y="124" text-anchor="middle" font-weight="600">Mapa GIS interactivo</text>
+    <text x="612" y="136" text-anchor="middle" font-size="7.5" fill="#55524A">deck.gl · WebGL</text>
+
+    <rect x="525" y="156" width="175" height="36" fill="#FFF" stroke="#D6CEBE" stroke-width="1"/>
+    <text x="612" y="172" text-anchor="middle" font-weight="600">Reportes PDF/CSV</text>
+    <text x="612" y="184" text-anchor="middle" font-size="7.5" fill="#55524A">Playwright · export</text>
+
+    <rect x="525" y="204" width="175" height="36" fill="#FBF3F1" stroke="#A8322D" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="612" y="220" text-anchor="middle" font-weight="600">Capa privada / API</text>
+    <text x="612" y="232" text-anchor="middle" font-size="7.5" fill="#A8322D">Fase 2 · auth + benchmark</text>
+  </g>
+
+  <!-- Flechas -->
+  <g stroke="#6B4E2E" stroke-width="1" fill="none" marker-end="url(#arrow)">
+    <line x1="170" y1="66"  x2="190" y2="98"/>
+    <line x1="170" y1="111" x2="190" y2="115"/>
+    <line x1="170" y1="156" x2="190" y2="130"/>
+    <line x1="170" y1="201" x2="190" y2="145"/>
+    <line x1="340" y1="120" x2="360" y2="80"/>
+    <line x1="340" y1="195" x2="360" y2="130"/>
+    <line x1="500" y1="78"  x2="525" y2="78"/>
+    <line x1="500" y1="126" x2="525" y2="126"/>
+    <line x1="500" y1="174" x2="525" y2="174"/>
+    <line x1="500" y1="222" x2="525" y2="222"/>
+  </g>
+
+  <!-- Capa gobernanza -->
+  <g>
+    <rect x="20" y="310" width="680" height="48" fill="#F7F5F0" stroke="#D6CEBE" stroke-width="0.6"/>
+    <text x="40" y="330" font-weight="700" font-size="9.5" fill="#A8322D" letter-spacing="0.08em">GOBERNANZA · CALIDAD · OBSERVABILIDAD</text>
+    <text x="40" y="346" font-size="8.5" fill="#55524A">Pandera schemas · smoke tests · lineage de fuentes · alertas por email/Slack · backups periódicos DuckDB</text>
+  </g>
+  <g>
+    <rect x="20" y="370" width="680" height="30" fill="#FBF3F1" stroke="#A8322D" stroke-width="0.6"/>
+    <text x="40" y="388" font-weight="700" font-size="9.5" fill="#A8322D" letter-spacing="0.08em">GOBERNANZA DE DATOS · PRIVACIDAD DIFERENCIAL (FASE 2)</text>
+  </g>
+</svg>
+
+      <div class="caption"><strong>Fig. 1</strong> Arquitectura lógica del Observatorio.
+      Pipeline unidireccional fuentes → warehouse → presentación, con capa transversal
+      de gobernanza y calidad. Los bloques punteados rojos indican capacidades de fase 2.</div>
+    </div>
+
+    <h2><span class="num">4.3</span>Stack tecnológico</h2>
+    <table>
+      <thead><tr><th>Capa</th><th>Tecnología</th><th>Justificación</th></tr></thead>
+      <tbody>
+        <tr><td>Lenguaje principal</td><td>Python 3.12</td><td>Ecosistema de datos dominante; contrataciones sostenibles.</td></tr>
+        <tr><td>Ingesta HTTP</td><td>requests + urllib3</td><td>Librerías estándar; control fino de timeouts/reintentos.</td></tr>
+        <tr><td>Data manipulation</td><td>pandas + pyarrow</td><td>APIs conocidas; performance suficiente a este volumen.</td></tr>
+        <tr><td>Warehouse analítico</td><td>DuckDB</td><td>SQL OLAP embebido; zero-ops; misma performance que un cluster para &lt;10GB.</td></tr>
+        <tr><td>Validación schemas</td><td>Pandera</td><td>Contratos tipados sobre DataFrames; tests declarativos.</td></tr>
+        <tr><td>Visualización</td><td>Plotly + pydeck</td><td>Charts interactivos + mapas 3D WebGL.</td></tr>
+        <tr><td>Frontend</td><td>Streamlit</td><td>Velocidad de iteración &gt;&gt; custom React para MVP; migrable en fase 2.</td></tr>
+        <tr><td>Modelos predictivos</td><td>statsmodels · Prophet · xgboost</td><td>Ensemble combina robustez estadística + captura de no-linealidades.</td></tr>
+        <tr><td>Export PDF</td><td>Playwright Chromium</td><td>Reusa el propio render HTML; sin WeasyPrint ni wkhtmltopdf.</td></tr>
+        <tr><td>Testing</td><td>pytest · Pandera</td><td>Smoke + schema + integration en un solo comando.</td></tr>
+        <tr><td>CI/CD</td><td>GitHub Actions</td><td>Cron diario para detectar drift de fuentes.</td></tr>
+        <tr><td>Orquestación</td><td>Prefect (fase 2)</td><td>Reintentos, lineage, UI. Innecesario en fase 1.</td></tr>
+      </tbody>
+    </table>
+
+    <h2><span class="num">4.4</span>Infraestructura propuesta</h2>
+    <p>Un <strong>único VPS</strong> (4 vCPU, 8 GB RAM, 80 GB SSD) alcanza para:</p>
+    <ul>
+      <li>Correr el dashboard Streamlit en producción.</li>
+      <li>Ejecutar el pipeline de ingesta mensual (15-20 minutos).</li>
+      <li>Alojar el warehouse DuckDB completo (~500 MB).</li>
+      <li>Generar los reportes PDF on-demand.</li>
+    </ul>
+    <p>Costo estimado: <strong>USD 20-40/mes</strong> (Hetzner / DigitalOcean / Contabo),
+    más USD 10/mes en backups S3. <strong>Certificado SSL</strong> gratuito vía Let's Encrypt.
+    <strong>CDN</strong> opcional con Cloudflare Free.</p>
+
+    <h2><span class="num">4.5</span>Estructura del código</h2>
+    <pre>ceipa_data/
+├── src/
+│   ├── sources.py              # Catálogo declarativo de fuentes
+│   ├── ingest.py               # Pipeline de ingesta + construcción de marts
+│   ├── forecast.py             # Modelos predictivos
+│   └── dashboard/
+│       ├── app.py              # Router (&lt;50 líneas)
+│       ├── shared.py           # Contexto compartido
+│       ├── theme.py            # Sistema de diseño (paleta + componentes)
+│       ├── export.py           # CSV + PDF
+│       └── sections/           # 13 módulos, uno por página
+├── tests/                      # pytest + Pandera
+├── data/                       # DuckDB warehouse (git-ignored)
+├── raw/                        # Archivos descargados (git-ignored)
+└── docs/                       # Documentación técnica y metodológica</pre>
+
+<h1 class="section"><span class="num">05</span>Estrategia de datos y fuentes</h1>
+<p class="deck">Una política explícita de selección, validación y
+cacheo de fuentes minimiza el riesgo de drift y maximiza la
+reproducibilidad del Observatorio.</p>
+
+<h2><span class="num">5.1</span>Principios</h2>
+<ul>
+  <li><strong>Prioridad a fuentes oficiales argentinas</strong> con obligación
+  de publicación (Secretaría de Energía, BCRA, INDEC, Min. Trabajo).
+  Son robustas ante cambios de gobierno porque tienen sustento normativo.</li>
+  <li><strong>Acceso programático preferido</strong> (APIs JSON/CSV) sobre
+  scraping HTML. El costo de mantenimiento de scrapers es 10x mayor.</li>
+  <li><strong>Catálogo declarativo</strong>. Cada fuente es una entrada en
+  <code>sources.py</code> con metadatos: URL, formato, frecuencia, notas
+  metodológicas. Agregar una nueva fuente = agregar una entrada.</li>
+  <li><strong>Tolerancia a fallos</strong>. Reintentos automáticos,
+  fallback a snapshots previos, alertas cuando una fuente lleva &gt;48h sin actualizar.</li>
+  <li><strong>Trazabilidad total</strong>. Cada fila del warehouse guarda
+  la fecha de carga y el nombre del archivo origen.</li>
+</ul>
+
+<h2><span class="num">5.2</span>Catálogo de fuentes priorizadas</h2>
+<table>
+  <thead>
+    <tr><th>Organismo</th><th>Datasets</th><th>Frecuencia</th><th>Rol en el observatorio</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Secretaría de Energía (CKAN)</td><td>Producción pozos, fracturas, permisos, sísmicas, trayectorias, regalías, reservas, precios gas, canon, yacimientos (12+)</td><td>Mensual</td><td>Núcleo del Observatorio</td></tr>
+    <tr><td>BCRA API v4</td><td>TC mayorista/minorista, tasas, IPC, base monetaria (7 series)</td><td>Diario</td><td>Contexto macro</td></tr>
+    <tr><td>INDEC / SSPM</td><td>IPC, EMAE, empleo sectorial, índices salariales (12 series)</td><td>Mensual/trimestral</td><td>Empleo y precios</td></tr>
+    <tr><td>World Bank Pink Sheet</td><td>Commodities (Brent, WTI, Dubai, LNG, coal)</td><td>Mensual</td><td>Benchmarks internacionales</td></tr>
+    <tr><td>Boletín Oficial</td><td>Homologaciones CCT, resoluciones</td><td>Diaria</td><td>Simulador paritario (fase 2)</td></tr>
+    <tr><td>Carga privada socios</td><td>Facturación, días de cobro, dotación (encuesta mensual)</td><td>Mensual</td><td>Benchmarking anónimo (fase 2)</td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">5.3</span>Pipeline de ingesta</h2>
+<p>El pipeline se ejecuta con un único comando y tiene las siguientes
+características:</p>
+<ol>
+  <li><strong>Descarga con caché incremental</strong>: si la URL no
+  cambió desde la última corrida (validado por ETag/Last-Modified),
+  se salta.</li>
+  <li><strong>Validación de schema</strong> vía Pandera antes de persistir:
+  si el tipo o rango de una columna es inesperado, falla con alerta.</li>
+  <li><strong>Transformación SQL</strong>: los <em>marts</em> se construyen como vistas
+  DuckDB parametrizables, no tablas físicas — se regeneran en milisegundos.</li>
+  <li><strong>Logging estructurado</strong>: cada corrida deja un registro
+  auditable (fuente, filas, latencia, errores).</li>
+  <li><strong>Modo selectivo</strong>: <code>python -m src.ingest --source produccion_no_convencional</code>
+  permite iterar sin re-descargar todo el warehouse.</li>
+</ol>
+
+<h2><span class="num">5.4</span>Política de calidad</h2>
+<ul>
+  <li><strong>Normalización de entidades</strong>: tabla de mapeo <code>empresa_canonica</code>
+  que unifica "YPF S.A.", "YPF SA", "Y.P.F." → "YPF S.A." con reglas
+  documentadas y revisables.</li>
+  <li><strong>Manejo explícito de nulls</strong>: valores missing se marcan
+  como <code>SIN_DATO</code> en dimensiones y como NULL en métricas numéricas;
+  no se imputan por default.</li>
+  <li><strong>Series nominales vs. reales</strong>: todas las métricas
+  monetarias se ofrecen en ambas presentaciones con deflactor IPC.</li>
+  <li><strong>Versionado del warehouse</strong>: snapshots mensuales
+  del <code>ceipa.duckdb</code> se conservan en S3 por 24 meses.</li>
+</ul>
+
+<h1 class="section"><span class="num">06</span>Modelo dimensional</h1>
+<p class="deck">Arquitectura tipo <em>medallion</em> con tres capas lógicas:
+bronze (raw), silver (marts tipados) y gold (indicadores de negocio).</p>
+
+<h2><span class="num">6.1</span>Capas</h2>
+<table>
+  <thead><tr><th>Capa</th><th>Prefijo</th><th>Contenido</th><th>Ejemplos</th></tr></thead>
+  <tbody>
+    <tr><td>Bronze</td><td><code>raw_*</code></td><td>Descargas crudas, mínima transformación (column names lowercased)</td><td>raw_produccion_no_convencional · raw_bcra · raw_fracturas_adjunto_iv</td></tr>
+    <tr><td>Silver</td><td><code>mart_*</code></td><td>Tipos corregidos, normalización de entidades, agregaciones por dimensión</td><td>mart_produccion_mensual · mart_pozos_geo · mart_macro</td></tr>
+    <tr><td>Gold</td><td><code>mart_iap_*</code></td><td>Indicadores construidos, artefactos analíticos finales</td><td>mart_iap_ceipa · mart_iap_forecast · mart_iap_backtest</td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">6.2</span>Marts principales</h2>
+<table>
+  <thead>
+    <tr><th>Mart</th><th>Grano</th><th>Dimensiones</th><th>Métricas</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>mart_produccion_mensual</td><td>empresa × yacimiento × mes</td><td>cuenca, provincia, tipo pozo, tipo recurso</td><td>prod petróleo m³, prod gas Mm³, agua, pozos activos</td></tr>
+    <tr><td>mart_fracturas_mensual</td><td>empresa × cuenca × mes</td><td>tipo reservorio</td><td>pozos fracturados, etapas, arena nacional/importada, agua</td></tr>
+    <tr><td>mart_pozos_geo</td><td>pozo</td><td>lon/lat, cuenca, provincia, yacimiento</td><td>producción 12m, tipo reservorio, fecha terminación</td></tr>
+    <tr><td>mart_trayectorias</td><td>pozo terminado</td><td>mes terminación, tipo pozo</td><td>profundidad vertical, rama horizontal, total MD</td></tr>
+    <tr><td>mart_precios_gas</td><td>cuenca × mes × segmento</td><td>contrato</td><td>precio distribuidora, GNC, industria, usina, export, PPP</td></tr>
+    <tr><td>mart_macro</td><td>fecha × variable</td><td>fuente (BCRA/INDEC)</td><td>valor</td></tr>
+    <tr><td>mart_iap_ceipa</td><td>mes</td><td>—</td><td>pozos fracturados, etapas, arena, IAP</td></tr>
+    <tr><td>mart_iap_forecast</td><td>mes futuro</td><td>—</td><td>base, optimista, pesimista</td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">6.3</span>Convenciones</h2>
+<ul>
+  <li><strong>Claves primarias naturales</strong> donde existen (idpozo, id_fractura); sintéticas solo si hacen falta.</li>
+  <li><strong>Fechas siempre como DATE</strong>; nunca strings.</li>
+  <li><strong>Magnitudes físicas en unidades SI</strong>: metros, metros cúbicos, toneladas.</li>
+  <li><strong>Dimensiones categóricas en MAYÚSCULAS</strong> para facilitar joins case-insensitive.</li>
+  <li><strong>Columnas anexas opcionales</strong> (geojson, observaciones) se mantienen pero no participan en agregaciones.</li>
+</ul>
+
+  <h1 class="section"><span class="num">07</span>Metodología analítica</h1>
+  <p class="deck">Cuatro pilares metodológicos sostienen la capa analítica:
+  el índice IAP-CEIPA, los escenarios predictivos, el simulador paritario
+  y el benchmarking privado con privacidad diferencial.</p>
+
+  <h2><span class="num">7.1</span>Índice de Actividad Proveedora (IAP-CEIPA)</h2>
+  <p>El IAP-CEIPA es un índice mensual que sintetiza la demanda de
+  servicios especializados (set de fracturas, logística, arena) en un
+  solo número comparable en el tiempo.</p>
+
+  <h3>Fórmula</h3>
+  <pre>IAP_t = 100 × (w_p · P_t/P_ref  +  w_e · E_t/E_ref  +  w_a · A_t/A_ref)
+
+donde:
+  P_t = pozos fracturados en mes t            (fuente: Adjunto IV)
+  E_t = etapas de fractura en mes t           (fuente: Adjunto IV)
+  A_t = toneladas de arena bombeada en mes t  (fuente: Adjunto IV)
+  P_ref, E_ref, A_ref = promedio mensual 2017-2019 (base 100)
+  w_p, w_e, w_a       = pesos (calibrados, ver 7.1.1)</pre>
+
+  <h3>7.1.1 Calibración de pesos</h3>
+  <p>La versión inicial asigna pesos 40/35/25 por criterio experto. La
+  calibración formal se realiza por <strong>regresión contra el empleo
+  sectorial registrado</strong> (CIIU 0910 - Servicios de apoyo al upstream)
+  con rezago de 3-6 meses, buscando minimizar el error cuadrático:</p>
+  <pre>arg min_(w_p,w_e,w_a) ||Empleo_{t+k} − IAP_t(w)||²
+   sujeto a w_p + w_e + w_a = 1, w_i ≥ 0</pre>
+  <p>La publicación pública documenta los pesos resultantes y su
+  intervalo de confianza.</p>
+
+  <h2><span class="num">7.2</span>Modelos predictivos</h2>
+  <p>El forecast se construye como un <strong>ensamble ponderado</strong> de tres
+  modelos complementarios:</p>
+  <ol>
+    <li><strong>SARIMAX(1,1,1)(1,0,1,12)</strong> con variables exógenas: TC mayorista,
+    IPC mensual, guidance CAPEX publicada. Captura estacionalidad y tendencia.</li>
+    <li><strong>Prophet</strong>: maneja cambios de régimen con holiday-like events
+    (planes gubernamentales: Plan Gas.Ar).</li>
+    <li><strong>XGBoost</strong> con features lagged (rig count, WTI, DUCs): captura
+    no-linealidades.</li>
+  </ol>
+  <p>Los pesos del ensamble se calibran por <strong>walk-forward validation</strong>
+  con ventanas móviles de 6 meses, minimizando MAPE combinado.</p>
+
+  <h3>7.2.1 Escenarios</h3>
+  <ul>
+    <li><strong>Base</strong>: pronóstico puntual del ensamble.</li>
+    <li><strong>Optimista</strong>: límite superior del intervalo de confianza 80%.</li>
+    <li><strong>Pesimista</strong>: límite inferior del intervalo de confianza 80%.</li>
+  </ul>
+
+  <h3>7.2.2 Métricas publicadas</h3>
+  <p>Cada reporte mensual documenta transparentemente:
+  <strong>MAPE</strong> (rolling 12m), <strong>RMSE</strong>, intervalo de confianza del ensamble,
+  estabilidad de los pesos. Un MAPE alto no se esconde: se explica como
+  característica del sector, no como falla del modelo.</p>
+
+  <h2><span class="num">7.3</span>Simulador de impacto paritario</h2>
+  <p>Herramienta web interactiva para usar en la mesa paritaria. La
+  operadora elige una propuesta salarial (ej: +15% trimestral escalonado),
+  el simulador calcula en vivo:</p>
+  <ul>
+    <li>Costo laboral anualizado por perfil de empresa (usando distribuciones
+    de plantilla típica por segmento de socios CEIPA).</li>
+    <li>Comparativo vs. evolución de tarifas de servicios reales.</li>
+    <li>Compresión de márgenes y punto de equilibrio.</li>
+    <li>Benchmark vs. paritaria de Petroleros Privados en otras cuencas.</li>
+  </ul>
+  <p>La fuente de datos salarial es el texto completo del CCT 644/12
+  parseado automáticamente desde Boletín Oficial.</p>
+
+  <h2><span class="num">7.4</span>Benchmarking con privacidad diferencial</h2>
+  <p>La capa privada permite a cada socio cargar sus datos (facturación
+  mensual, días de cobro, dotación, siniestralidad) y ver su posición
+  relativa al sector sin exponer datos individuales. La política es:</p>
+  <ul>
+    <li><strong>Celdas con N &lt; 5 se suprimen</strong> (no se muestra cuartil).</li>
+    <li><strong>Ruido Laplaciano calibrado</strong> en estadísticos agregados
+    con parámetro ε documentado públicamente.</li>
+    <li><strong>Política de retención</strong>: datos crudos por empresa se
+    borran tras 12 meses; solo persisten los agregados anonimizados.</li>
+    <li><strong>Auditoría</strong>: cualquier socio puede solicitar en cualquier
+    momento la eliminación de sus datos.</li>
+  </ul>
+
+<h1 class="section"><span class="num">08</span>Capa de presentación</h1>
+<p class="deck">Un sistema de diseño coherente y un dashboard con 13 secciones
+entregan inteligencia accionable en un lenguaje visual editorial.</p>
+
+<h2><span class="num">8.1</span>Principios de diseño</h2>
+<ul>
+  <li><strong>Editorial sobre ejecutivo</strong>: privilegio la densidad informativa
+  de un diario financiero (FT / The Economist) por sobre el "tablero con
+  semáforos". El usuario es un profesional que sabe leer.</li>
+  <li><strong>Un único acento cromático</strong> (burgundy) usado con disciplina
+  — nunca como relleno decorativo, siempre como jerarquía.</li>
+  <li><strong>Tipografía trabajando</strong>: titulares en IBM Plex Sans Condensed
+  (denso, industrial), cuerpos en Plex Serif (legibilidad larga),
+  números en Plex Mono (alineación tabular).</li>
+  <li><strong>Fondo blanco consistente</strong>: charts sin card que "sobredestaquen";
+  los datos fluyen con el texto.</li>
+  <li><strong>Jerarquía por reglas horizontales</strong>, no por sombras ni
+  bordes. Feel de broadsheet, no de SaaS.</li>
+</ul>
+
+<h2><span class="num">8.2</span>Sistema de componentes</h2>
+<table>
+  <thead><tr><th>Componente</th><th>Uso</th></tr></thead>
+  <tbody>
+    <tr><td><code>hero()</code></td><td>Masthead al tope de la sección — fecha, título, deck, chips de contexto</td></tr>
+    <tr><td><code>section_header()</code></td><td>Eyebrow small-caps + título serif + subtítulo descriptivo</td></tr>
+    <tr><td><code>stat_card()</code></td><td>Card con label, valor grande, delta opcional y sparkline SVG</td></tr>
+    <tr><td><code>bento_grid()</code></td><td>Grid tipográfico asimétrico sin bordes</td></tr>
+    <tr><td><code>chip()</code></td><td>Tag minimal para categorías — small caps con underline</td></tr>
+    <tr><td><code>csv_button()</code></td><td>Botón de export por sección</td></tr>
+    <tr><td><code>pdf_report_button()</code></td><td>Genera el reporte mensual on-demand</td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">8.3</span>Mapa de secciones</h2>
+<table>
+  <thead><tr><th>#</th><th>Sección</th><th>Propósito</th></tr></thead>
+  <tbody>
+    <tr><td>01</td><td>Resumen ejecutivo</td><td>Snapshot diario: IAP, pozos, producción, empleo, WTI, dólar</td></tr>
+    <tr><td>02</td><td>Actividad perforación y fractura</td><td>Series mensuales de etapas, pozos, arena</td></tr>
+    <tr><td>03</td><td>Producción por empresa</td><td>Ranking top 20 por petróleo y gas, evolución temporal</td></tr>
+    <tr><td>04</td><td>Producción por cuenca / provincia</td><td>Comparativa geográfica de producción</td></tr>
+    <tr><td>05</td><td>Pipeline de proyectos (EIAs)</td><td>Estudios ambientales en carpeta — leading indicator</td></tr>
+    <tr><td>06</td><td>Mapa GIS</td><td>84.000+ pozos, yacimientos, sísmicas, permisos (deck.gl)</td></tr>
+    <tr><td>07</td><td>Trayectorias shale</td><td>Curva de aprendizaje VM: rama horizontal vs. año</td></tr>
+    <tr><td>08</td><td>Precios de gas</td><td>Por cuenca, contrato y segmento (distribuidora/GNC/industria/usina/export)</td></tr>
+    <tr><td>09</td><td>Precios internacionales</td><td>Brent, WTI, LNG Japan, coal Australia (World Bank)</td></tr>
+    <tr><td>10</td><td>Empleo y salarios</td><td>Series SSPM sector petrolero vs. otras ramas</td></tr>
+    <tr><td>11</td><td>Forecast IAP-CEIPA</td><td>Histórico + 3 escenarios a 12 meses + backtest</td></tr>
+    <tr><td>12</td><td>Macroeconomía y precios</td><td>Variables BCRA + INDEC (TC, tasas, reservas, IPC)</td></tr>
+    <tr><td>13</td><td>Catálogo de fuentes</td><td>Transparencia: todas las fuentes listadas con URL y frecuencia</td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">8.4</span>Accesibilidad y performance</h2>
+<ul>
+  <li><strong>Performance</strong>: first paint &lt; 1.2s (fonts auto-optimizadas, CSS minificado).</li>
+  <li><strong>Queries cacheadas</strong> por 10 minutos (no recarga innecesaria del warehouse).</li>
+  <li><strong>WCAG AA</strong>: contraste ≥ 4.5:1 en texto; foco visible en navegación.</li>
+  <li><strong>Mobile</strong>: layout responsivo básico; versión mobile-first planificada en fase 4.</li>
+</ul>
+
+    <h1 class="section"><span class="num">09</span>Calidad, testing y observabilidad</h1>
+    <p class="deck">Un proyecto de datos sin tests es una hipótesis no validada.
+    Cuatro capas de calidad automatizadas sostienen la confianza operativa.</p>
+
+    <h2><span class="num">9.1</span>Suite de tests</h2>
+    <table>
+      <thead><tr><th>Capa</th><th>Qué valida</th><th>Frecuencia</th></tr></thead>
+      <tbody>
+        <tr><td>Conectividad</td><td>APIs públicas responden (BCRA, INDEC, WB, CKAN)</td><td>Diaria</td></tr>
+        <tr><td>Warehouse</td><td>19 tablas presentes, volúmenes mínimos, rangos de fecha, coherencia geográfica</td><td>Post-ingest</td></tr>
+        <tr><td>Schemas Pandera</td><td>Tipos y rangos de cada columna del mart (nulls, rangos, dominios categóricos)</td><td>Post-ingest</td></tr>
+        <tr><td>Modelos</td><td>Forecast devuelve 12 meses, 3 escenarios ordenados, MAPE en rango razonable</td><td>Post-forecast</td></tr>
+        <tr><td>UI</td><td>Las 13 secciones renderizan sin errores (Playwright smoke)</td><td>Pre-deploy</td></tr>
+      </tbody>
+    </table>
+
+    <h2><span class="num">9.2</span>Observabilidad en producción</h2>
+    <ul>
+      <li><strong>Logging estructurado</strong> (JSON) de cada corrida de ingesta con latencia, filas descargadas, errores.</li>
+      <li><strong>Alertas</strong>:
+        <ul>
+          <li>Falla de ingesta &gt; 24h → email al equipo técnico.</li>
+          <li>Schema drift detectado → email + Slack.</li>
+          <li>IAP-CEIPA cae &gt; 20% MoM → email a Comisión Directiva.</li>
+        </ul>
+      </li>
+      <li><strong>Dashboard interno</strong> (cronjob → página estática) con health-check de las 20+ fuentes.</li>
+    </ul>
+
+    <h2><span class="num">9.3</span>CI/CD</h2>
+    <pre># .github/workflows/daily.yml
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 6 AM UTC (3 AM AR)
+  workflow_dispatch:
+
+jobs:
+  ingest-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
+      - run: python -m src.ingest
+      - run: pytest
+      - run: rsync warehouse to production VPS
+      - if: failure() → alerta a Slack</pre>
+
+<h1 class="section"><span class="num">10</span>Seguridad y gobernanza</h1>
+<p class="deck">La confianza institucional que requiere CEIPA exige un tratamiento
+explícito de seguridad y de gobernanza de datos — más aún al habilitar
+la capa privada.</p>
+
+<h2><span class="num">10.1</span>Seguridad técnica</h2>
+<ul>
+  <li><strong>HTTPS obligatorio</strong> en toda la superficie pública (Let's Encrypt + renovación automática).</li>
+  <li><strong>Autenticación</strong> para la capa privada vía OAuth2 (Google Workspace o magic links por email).</li>
+  <li><strong>RBAC</strong> (Role-Based Access Control) con tres niveles: público, socio, admin.</li>
+  <li><strong>Secretos en variables de entorno</strong>, nunca en código. Gestión con <code>.env.vault</code> o equivalente.</li>
+  <li><strong>Backups cifrados</strong> del warehouse a S3 con rotación 90 días.</li>
+  <li><strong>Dependencias auditadas</strong> mensualmente con <code>pip-audit</code>.</li>
+</ul>
+
+<h2><span class="num">10.2</span>Gobernanza de datos</h2>
+<p>Un documento de <strong>Protocolo de Gobernanza</strong> — a firmarse
+por la Comisión Directiva al inicio de la fase 2 — establece:</p>
+<ul>
+  <li><strong>Responsable editorial</strong> del Observatorio (persona física en CEIPA).</li>
+  <li><strong>Proceso de publicación</strong>: revisión antes de publicar indicadores que puedan tener impacto mediático.</li>
+  <li><strong>Política de privacidad</strong> para datos cargados por socios.</li>
+  <li><strong>Política de retención</strong>: 24m públicos, 12m privados por empresa.</li>
+  <li><strong>Proceso de baja</strong>: cualquier socio puede solicitar eliminación con 7 días hábiles.</li>
+  <li><strong>Condiciones de uso</strong> de las fuentes externas (especialmente World Bank).</li>
+</ul>
+
+<h2><span class="num">10.3</span>Consideraciones legales</h2>
+<p>La Ley de Protección de Datos Personales (25.326) y la futura
+reforma (PL 2026) aplican a la capa privada. Se diseñará conforme a:</p>
+<ul>
+  <li>Base legal del tratamiento: consentimiento expreso del socio al registrarse.</li>
+  <li>Minimización: solo se pide lo necesario para el benchmark.</li>
+  <li>Portabilidad: export de datos propios a CSV/JSON en cualquier momento.</li>
+  <li>Derecho de supresión operativo y automatizado.</li>
+</ul>
+
+    <h1 class="section"><span class="num">11</span>Cronograma y entregables</h1>
+    <p class="deck">Seis meses calendario, cinco fases con milestones verificables
+    y un entregable tangible cada mes.</p>
+
+    <h2><span class="num">11.1</span>Visión general</h2>
+    <div class="figure">
+
+<svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Sans, sans-serif">
+  <!-- ejes -->
+  <g stroke="#D6CEBE" stroke-width="0.6">
+    <line x1="40" y1="40" x2="700" y2="40"/>
+    <line x1="40" y1="240" x2="700" y2="240"/>
+  </g>
+  <!-- hitos mensuales -->
+  <g font-size="8" fill="#55524A" font-weight="600" text-anchor="middle">
+    <text x="95" y="30">M1</text>
+    <text x="205" y="30">M2</text>
+    <text x="315" y="30">M3</text>
+    <text x="425" y="30">M4</text>
+    <text x="535" y="30">M5</text>
+    <text x="645" y="30">M6</text>
+  </g>
+  <g stroke="#D6CEBE" stroke-dasharray="2,2" stroke-width="0.5">
+    <line x1="95" y1="40" x2="95" y2="240"/>
+    <line x1="205" y1="40" x2="205" y2="240"/>
+    <line x1="315" y1="40" x2="315" y2="240"/>
+    <line x1="425" y1="40" x2="425" y2="240"/>
+    <line x1="535" y1="40" x2="535" y2="240"/>
+    <line x1="645" y1="40" x2="645" y2="240"/>
+  </g>
+
+  <!-- barras de fase -->
+  <!-- Fase 0 -->
+  <rect x="40" y="55" width="100" height="18" fill="#A8322D" opacity="0.85"/>
+  <text x="150" y="68" font-size="9" fill="#111" font-weight="600">Fase 0 · Discovery</text>
+
+  <!-- Fase 1 -->
+  <rect x="55" y="85" width="220" height="18" fill="#A8322D" opacity="0.65"/>
+  <text x="285" y="98" font-size="9" fill="#111" font-weight="600">Fase 1 · Ingesta + Warehouse</text>
+
+  <!-- Fase 2 -->
+  <rect x="150" y="115" width="220" height="18" fill="#A8322D" opacity="0.55"/>
+  <text x="380" y="128" font-size="9" fill="#111" font-weight="600">Fase 2 · Observatorio público (IAP + dashboards)</text>
+
+  <!-- Fase 3 -->
+  <rect x="260" y="145" width="230" height="18" fill="#A8322D" opacity="0.45"/>
+  <text x="500" y="158" font-size="9" fill="#111" font-weight="600">Fase 3 · Modelos predictivos + GIS</text>
+
+  <!-- Fase 4 -->
+  <rect x="370" y="175" width="220" height="18" fill="#A8322D" opacity="0.35"/>
+  <text x="600" y="188" font-size="9" fill="#111" font-weight="600">Fase 4 · Capa privada + auth</text>
+
+  <!-- Fase 5 -->
+  <rect x="480" y="205" width="220" height="18" fill="#A8322D" opacity="0.25"/>
+  <text x="540" y="218" font-size="8.5" fill="#55524A">Fase 5 · Simulador paritario · Roll-out</text>
+
+  <!-- Hitos -->
+  <g fill="#A8322D">
+    <circle cx="205" cy="135" r="3"/>
+    <text x="210" y="138" font-size="7.5" fill="#A8322D" font-weight="600">Obs. público live</text>
+    <circle cx="425" cy="165" r="3"/>
+    <text x="430" y="168" font-size="7.5" fill="#A8322D" font-weight="600">Forecast + GIS</text>
+    <circle cx="645" cy="225" r="3"/>
+    <text x="540" y="245" font-size="7.5" fill="#A8322D" font-weight="600">Piloto paritaria CCT 644/12</text>
+  </g>
+</svg>
+
+      <div class="caption"><strong>Fig. 2</strong> Cronograma de fases. Las barras
+      se solapan porque cada fase arranca antes de que la anterior termine.
+      Los milestones son verificables por la Comisión Directiva.</div>
+    </div>
+
+    <h2><span class="num">11.2</span>Fase 0 — Discovery (mes 1, primeras 4 semanas)</h2>
+    <ul>
+      <li>Entrevistas a 15-20 empresas socias segmentadas por tipo (servicios especiales, logística, metalúrgicas, catering).</li>
+      <li>Taller con Comisión Directiva: qué se publica (posicionamiento institucional) vs. qué queda interno (benchmarking privado).</li>
+      <li>Validación del catálogo de indicadores priorizados.</li>
+    </ul>
+    <p><strong>Entregable:</strong> Documento de alcance + matriz de gobernanza + catálogo de KPIs.</p>
+
+    <h2><span class="num">11.3</span>Fase 1 — Ingesta + Warehouse (mes 1-2)</h2>
+    <ul>
+      <li>Implementación del catálogo de fuentes.</li>
+      <li>Pipeline de ingesta con validación Pandera.</li>
+      <li>Warehouse DuckDB con marts principales.</li>
+      <li>Suite de tests base y CI.</li>
+    </ul>
+    <p><strong>Entregable:</strong> Warehouse reproducible + 90% de las fuentes integradas + repo con tests.</p>
+
+    <h2><span class="num">11.4</span>Fase 2 — Observatorio público (mes 2-4)</h2>
+    <ul>
+      <li>Dashboard Streamlit con 13 secciones.</li>
+      <li>Sistema de diseño editorial aplicado.</li>
+      <li>Índice IAP-CEIPA publicado.</li>
+      <li>Export CSV por sección + reporte mensual PDF.</li>
+    </ul>
+    <p><strong>Entregable:</strong> Observatorio público live en <code>observatorio.ceipa.com.ar</code>.</p>
+
+    <h2><span class="num">11.5</span>Fase 3 — Modelos predictivos + GIS (mes 3-5)</h2>
+    <ul>
+      <li>Forecast ensemble (SARIMAX + Prophet + XGBoost).</li>
+      <li>Backtest walk-forward documentado.</li>
+      <li>Mapa GIS interactivo con 5 capas (pozos, yacimientos, fracturas, sísmicas, permisos).</li>
+      <li>Trayectorias shale con análisis de curva de aprendizaje.</li>
+    </ul>
+    <p><strong>Entregable:</strong> Módulo predictivo con MAPE &lt; 25% en el promedio trimestral.</p>
+
+    <h2><span class="num">11.6</span>Fase 4 — Capa privada (mes 4-6)</h2>
+    <ul>
+      <li>Autenticación OAuth2 + RBAC.</li>
+      <li>Módulo de carga de datos privados por socio.</li>
+      <li>Benchmarking anónimo con privacidad diferencial.</li>
+      <li>Política de gobernanza firmada.</li>
+    </ul>
+    <p><strong>Entregable:</strong> Capa privada operativa con ≥ 5 empresas socias piloto.</p>
+
+    <h2><span class="num">11.7</span>Fase 5 — Simulador paritario + roll-out (mes 5-6)</h2>
+    <ul>
+      <li>Parser automatizado de CCT 644/12 desde Boletín Oficial.</li>
+      <li>Simulador interactivo de escenarios paritarios.</li>
+      <li>Capacitación a referentes técnicos de 3 empresas socias.</li>
+      <li>Documentación de traspaso y plan de sostenibilidad 24 meses.</li>
+    </ul>
+    <p><strong>Entregable:</strong> Simulador paritario usable en mesa + traspaso completo.</p>
+
+<h1 class="section"><span class="num">12</span>Esfuerzo, equipo y sostenibilidad</h1>
+<p class="deck">Estimación honesta de capacidad y un plan explícito para
+que el Observatorio sobreviva al equipo original.</p>
+
+<h2><span class="num">12.1</span>Equipo propuesto</h2>
+<table>
+  <thead><tr><th>Rol</th><th>Dedicación</th><th>Responsabilidades</th></tr></thead>
+  <tbody>
+    <tr><td>Tech Lead / Data Engineer</td><td>80% · 6m</td><td>Arquitectura, ingesta, marts, tests, deploy</td></tr>
+    <tr><td>Analista sectorial (ciencias sociales)</td><td>50% · 6m</td><td>Validación metodológica, entrevistas con socios, interpretación</td></tr>
+    <tr><td>Frontend / Data Viz</td><td>40% · 4m (fase 2-3)</td><td>Dashboard, sistema de diseño, UX</td></tr>
+    <tr><td>Data Scientist</td><td>30% · 3m (fase 3)</td><td>Modelos predictivos, benchmarking, metodología IAP</td></tr>
+    <tr><td>Project Manager</td><td>20% · 6m</td><td>Coordinación con CEIPA, gobernanza, comunicación</td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">12.2</span>Esfuerzo estimado</h2>
+<p>Total: <strong>~1.100 horas-persona</strong> en 6 meses calendario.
+Distribución aproximada:</p>
+<ul>
+  <li>Fase 0 (Discovery): 80 h</li>
+  <li>Fase 1 (Ingesta): 220 h</li>
+  <li>Fase 2 (Observatorio público): 320 h</li>
+  <li>Fase 3 (Predictivos + GIS): 240 h</li>
+  <li>Fase 4 (Privada): 160 h</li>
+  <li>Fase 5 (Simulador + traspaso): 80 h</li>
+</ul>
+
+<h2><span class="num">12.3</span>Infraestructura</h2>
+<table>
+  <thead><tr><th>Concepto</th><th>Costo mensual</th><th>Notas</th></tr></thead>
+  <tbody>
+    <tr><td>VPS producción (4 vCPU · 8 GB)</td><td class="num">USD 30</td><td>Hetzner Cloud</td></tr>
+    <tr><td>Backups S3 + CDN</td><td class="num">USD 15</td><td>AWS S3 + Cloudflare Free</td></tr>
+    <tr><td>Dominio + SSL</td><td class="num">USD 2</td><td>Namecheap + Let's Encrypt</td></tr>
+    <tr><td>Email transaccional (alertas)</td><td class="num">USD 10</td><td>Postmark / SendGrid</td></tr>
+    <tr><td class="num"><strong>Total infra</strong></td><td class="num"><strong>USD 57/mes</strong></td><td></td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">12.4</span>Sostenibilidad post-proyecto</h2>
+<p>El Observatorio está diseñado para sobrevivir con <strong>1 analista part-time
+(20h/mes)</strong> una vez finalizada la construcción. Esto es posible porque:</p>
+<ul>
+  <li>Pipeline 100% automatizado, sin intervención manual rutinaria.</li>
+  <li>Tests automatizados detectan drift de fuentes.</li>
+  <li>Stack open-source estándar sin componentes exóticos.</li>
+  <li>Documentación exhaustiva del código, metodología y operación.</li>
+  <li>Transferencia de know-how progresiva durante los 6 meses, no al final.</li>
+</ul>
+<p>Se recomienda reservar presupuesto anual para <em>evolución</em>
+(nuevas fuentes, mejoras metodológicas, integraciones adicionales):
+~10-15% del costo original.</p>
+
+<h1 class="section"><span class="num">13</span>Riesgos y mitigación</h1>
+<p class="deck">Identificamos riesgos en cinco dimensiones. Para cada uno,
+una estrategia concreta de mitigación.</p>
+
+<table>
+  <thead><tr><th>Riesgo</th><th>Probabilidad</th><th>Impacto</th><th>Mitigación</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Sec. Energía discontinúa / cambia formato</strong></td>
+      <td>Media</td><td>Alto</td>
+      <td>Schema drift detection automático; snapshots mensuales del warehouse; plan de fallback con scraping de informes PDF alternativos</td>
+    </tr>
+    <tr>
+      <td><strong>Baja adopción de socios en la capa privada</strong></td>
+      <td>Alta</td><td>Alto</td>
+      <td>Empezar con solo datos públicos; piloto con 3-5 socios antes de roll-out; benchmarking entrega valor tangible desde la primera carga</td>
+    </tr>
+    <tr>
+      <td><strong>Sesgo de YPF (~50% producción)</strong></td>
+      <td>Cierta</td><td>Medio</td>
+      <td>Paneles separados YPF vs. Resto-operadoras; IAP-CEIPA solo usa fracturas (más distribuidas entre empresas de servicio)</td>
+    </tr>
+    <tr>
+      <td><strong>Politización del Observatorio</strong></td>
+      <td>Media</td><td>Alto</td>
+      <td>Protocolo editorial firmado; metodología pública; publicación de incertidumbre (MAPE, intervalos); comunicación basada en hechos</td>
+    </tr>
+    <tr>
+      <td><strong>MAPE alto que cuestione credibilidad</strong></td>
+      <td>Media</td><td>Medio</td>
+      <td>Transparencia del error; publicar trimestre promedio (no mensual); comparar con MAPE de analistas comerciales privados</td>
+    </tr>
+    <tr>
+      <td><strong>Capacidad técnica para sostenerlo</strong></td>
+      <td>Media</td><td>Alto</td>
+      <td>Stack simple (Python + DuckDB + Streamlit); documentación exhaustiva; transferencia progresiva; contrato de mantenimiento opcional</td>
+    </tr>
+    <tr>
+      <td><strong>Incidente de privacidad en capa privada</strong></td>
+      <td>Baja</td><td>Muy alto</td>
+      <td>Diseño conforme a Ley 25.326; privacidad diferencial con N≥5; auditoría externa previa al roll-out; seguro de ciberseguridad</td>
+    </tr>
+    <tr>
+      <td><strong>Construir algo técnicamente bello que nadie usa</strong></td>
+      <td>Media</td><td>Muy alto</td>
+      <td>Fase 0 obligatoria con 15-20 entrevistas; validación de cada fase con 3-5 socios antes de avanzar; métricas de adopción como KPI del proyecto</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <strong>El riesgo más alto</strong> no es técnico: es construir algo que nadie use.
+  Por eso la Fase 0 no es negociable, y por eso cada fase subsiguiente
+  incluye validación cualitativa con socios antes del commit.
+</div>
+
+<h1 class="section"><span class="num">14</span>Conclusión</h1>
+<p class="deck">Una propuesta sobria, con alcance acotado, métodos transparentes
+y sostenibilidad como restricción de diseño.</p>
+
+<p>El Observatorio CEIPA no es un tablero: es una <strong>infraestructura de
+inteligencia sectorial</strong>. La diferencia es sustantiva. Un tablero es un
+proyecto; una infraestructura es un activo. Al finalizar las cinco fases,
+CEIPA dispondrá de:</p>
+
+<ul>
+  <li>Una plataforma reproducible que consolida 20+ fuentes oficiales y entrega
+  indicadores mensuales auditables.</li>
+  <li>Un índice propio — IAP-CEIPA — con metodología publicada y defendible
+  ante cualquier auditor, periodista u operadora.</li>
+  <li>Una capa de benchmarking privado que entrega valor recurrente a cada
+  socio y justifica su adhesión a la Cámara.</li>
+  <li>Un simulador paritario utilizable en tiempo real en la mesa de negociación
+  con el sindicato Petroleros Privados.</li>
+  <li>Posicionamiento institucional de CEIPA como <em>la fuente autoritativa</em>
+  de datos del sector proveedor de Vaca Muerta.</li>
+</ul>
+
+<p>La propuesta es <strong>deliberadamente conservadora</strong> en tecnología y
+deliberadamente ambiciosa en alcance metodológico. El riesgo de usar un
+stack sofisticado (Spark, Kubernetes, arquitectura microservicios) sería
+romper la restricción de sostenibilidad. El riesgo de no intentar el simulador
+paritario o el benchmarking sería construir algo técnicamente sólido pero
+institucionalmente intrascendente.</p>
+
+<p>Quedamos a disposición para ampliar cualquier sección, adaptar el cronograma
+y los esfuerzos a las prioridades específicas de CEIPA, y revisar la propuesta
+con la Comisión Directiva y socios piloto.</p>
+
+<div style="margin-top: 20mm; padding-top: 5mm; border-top: 2px solid var(--rule); font-family: 'IBM Plex Sans', sans-serif; font-size: 9pt;">
+  <p style="margin-bottom: 1mm;"><strong>Documento:</strong> Propuesta Técnica — Observatorio CEIPA</p>
+  <p style="margin-bottom: 1mm;"><strong>Emisor:</strong> Equipo proponente</p>
+  <p style="margin-bottom: 1mm;"><strong>Destinatario:</strong> Comisión Directiva, CEIPA</p>
+  <p><strong>Fecha:</strong> 20 de abril de 2026</p>
+</div>
+
+</body>
+</html>
