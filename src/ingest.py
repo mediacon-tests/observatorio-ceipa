@@ -81,7 +81,7 @@ def _read_precio_pi(path: Path) -> pd.DataFrame:
     raw = pd.read_excel(path, header=None)
     header_row = None
     for i in range(min(6, len(raw))):
-        row = raw.iloc[i].astype(str).str.lower().tolist()
+        row = [str(x).lower() for x in raw.iloc[i].tolist()]
         if any("u$s" in c or "barril" in c for c in row):
             header_row = i
             break
@@ -99,11 +99,17 @@ def ingest_energia(con: duckdb.DuckDBPyConnection) -> None:
         ext = "xlsx" if src.fmt.startswith("xlsx") else src.fmt
         dest = RAW / f"{key}.{ext}"
         try:
-            if not dest.exists() or dest.stat().st_size < 1024:
-                log(f"GET {key}")
+            if src.refresh or not dest.exists() or dest.stat().st_size < 1024:
+                log(f"GET {key}{' (refresh)' if src.refresh else ''}")
                 download(src.url, dest)
             if src.fmt == "csv":
                 df = pd.read_csv(dest, low_memory=False)
+            elif src.fmt == "csv_fred":
+                df = pd.read_csv(dest)
+                df.columns = ["fecha", "valor"]
+                df["fecha"] = pd.to_datetime(df["fecha"], errors="coerce")
+                df["valor"] = pd.to_numeric(df["valor"], errors="coerce")
+                df = df.dropna(subset=["fecha", "valor"])
             elif src.fmt == "xlsx":
                 df = pd.read_excel(dest)
             elif src.fmt == "xlsx_pi":

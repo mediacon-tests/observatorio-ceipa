@@ -17,6 +17,7 @@ class Source:
     fmt: str
     frequency: str
     notes: str = ""
+    refresh: bool = False  # True = re-descargar SIEMPRE (fuentes que cambian seguido)
 
 
 ENERGIA_SOURCES = [
@@ -109,6 +110,7 @@ ENERGIA_SOURCES = [
         fmt="xlsx_pi",
         frequency="mensual",
         notes="Precio referencia usado para regalías. Excel con encabezado irregular.",
+        refresh=True,
     ),
     # === Tanda 1 nuevas fuentes (2026-04) ===
     Source(
@@ -200,6 +202,17 @@ ENERGIA_SOURCES = [
         fmt="xlsx_wb",
         frequency="mensual",
         notes="Precios mensuales: crude Brent/WTI/Dubai, gas natural US/EU/LNG. Sin API key.",
+        refresh=True,
+    ),
+    Source(
+        key="wti_spot_diario",
+        title="WTI spot diario (Cushing, EIA vía FRED)",
+        organism="EIA / FRED",
+        url="https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO",
+        fmt="csv_fred",
+        frequency="diaria",
+        notes="Precio spot diario WTI Cushing. Sin API key. Spot real (a diferencia del promedio mensual rezagado del WB).",
+        refresh=True,
     ),
     Source(
         key="estudios_ambientales",

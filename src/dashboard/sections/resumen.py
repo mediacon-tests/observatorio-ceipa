@@ -113,9 +113,18 @@ def render(ctx: "Ctx") -> None:
     emp_mp = q("""SELECT valor FROM mart_macro WHERE clave='empleo_mineria_petroleo' ORDER BY fecha DESC LIMIT 1""")
     emp_val = int(emp_mp.iloc[0]["valor"]) if len(emp_mp) else 0
 
-    wti = q("""SELECT valor FROM raw_wb_commodity_prices WHERE commodity = 'crude_oil__wti____bbl_' ORDER BY fecha DESC LIMIT 1""")
-    wti_val = wti.iloc[0]["valor"] if len(wti) else None
-    wti_prev = q("""SELECT valor FROM raw_wb_commodity_prices WHERE commodity = 'crude_oil__wti____bbl_' ORDER BY fecha DESC LIMIT 13""")["valor"].tolist()
+    # WTI spot diario real (EIA/FRED); fallback al promedio mensual WB si no está cargado.
+    wti = q("""SELECT fecha, valor FROM raw_wti_spot_diario ORDER BY fecha DESC LIMIT 1""")
+    if len(wti):
+        wti_val = wti.iloc[0]["valor"]
+        wti_fecha = wti.iloc[0]["fecha"]
+        wti_label = f"WTI spot ({wti_fecha:%d-%m-%Y})"
+        wti_prev = q("""SELECT valor FROM raw_wti_spot_diario ORDER BY fecha DESC LIMIT 30""")["valor"].tolist()
+    else:
+        wti = q("""SELECT fecha, valor FROM raw_wb_commodity_prices WHERE commodity = 'crude_oil__wti____bbl_' ORDER BY fecha DESC LIMIT 1""")
+        wti_val = wti.iloc[0]["valor"] if len(wti) else None
+        wti_label = "WTI (prom. mensual WB)"
+        wti_prev = q("""SELECT valor FROM raw_wb_commodity_prices WHERE commodity = 'crude_oil__wti____bbl_' ORDER BY fecha DESC LIMIT 13""")["valor"].tolist()
     wti_spark = list(reversed(wti_prev))
 
     tc = q("""SELECT valor FROM mart_macro WHERE clave='tc_mayorista' ORDER BY fecha DESC LIMIT 1""")
@@ -129,7 +138,7 @@ def render(ctx: "Ctx") -> None:
                   spark=frac_spark, palette=PALETTE),
         stat_card("Empleo Minería y Petróleo",
                   f"{emp_val:,}", unit="puestos", palette=PALETTE),
-        stat_card("WTI spot",
+        stat_card(wti_label,
                   f"{wti_val:.1f}" if wti_val else "—", unit="USD/bbl",
                   spark=wti_spark, palette=PALETTE),
         stat_card("Dólar mayorista",
