@@ -45,7 +45,8 @@ Las fuentes que cambian seguido (`wb_commodity_prices`, `precio_internacional_cr
 ## Quickstart
 
 ```bash
-cd ceipa_data
+git clone https://github.com/mediacon-tests/observatorio-ceipa.git
+cd observatorio-ceipa
 python3 -m venv .venv
 source .venv/bin/activate
 pip install pandas duckdb requests streamlit plotly openpyxl pyarrow
@@ -56,7 +57,7 @@ python -m src.ingest
 # 2. Entrenar modelo predictivo IAP-CEIPA (SARIMAX + backtest)
 python -m src.forecast
 
-# 3. Levantar dashboard
+# 3. Levantar dashboard (o usar ./run_dashboard.sh)
 streamlit run src/dashboard/app.py
 ```
 
