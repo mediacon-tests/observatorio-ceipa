@@ -1,0 +1,51 @@
+name: Refrescar warehouse
+
+# Reconstruye el DuckDB desde las fuentes públicas y actualiza el asset
+# `ceipa.duckdb` del Release `data-latest`, que la app descarga al arrancar.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # cada lunes 06:00 UTC (~03:00 ART)
+  workflow_dispatch: {}     # botón "Run workflow" manual
+
+permissions:
+  contents: write           # necesario para subir el asset al Release
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ingesta + warehouse
+        run: python -m src.ingest
+
+      - name: Entrenar forecast IAP-CEIPA
+        run: python -m src.forecast
+
+      - name: Verificar el DuckDB
+        run: |
+          test -s data/ceipa.duckdb
+          ls -lh data/ceipa.duckdb
+
+      - name: Publicar snapshot en el Release data-latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload data-latest data/ceipa.duckdb --clobber \
+            --repo "${{ github.repository }}"
