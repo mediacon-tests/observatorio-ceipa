@@ -27,9 +27,20 @@ Sistema de inteligencia de datos sectorial para la **Cámara Empresarial de la I
 | Sec. Energía | Datos de fractura (Adjunto IV) | 4.666 |
 | Sec. Energía | Estudios ambientales | 12.441 |
 | Sec. Energía | Concesiones / Yacimientos / Registro empresas | +1.000 |
-| Sec. Energía | Precio internacional crudo, series 1950 | +200 |
+| Sec. Energía | Precio internacional crudo (Dec. 488/2020), series 1950 | +200 |
+| EIA (vía FRED) | WTI spot **diario** (Cushing, `DCOILWTICO`) | 10.186 obs |
+| World Bank | Pink Sheet — precios mensuales commodities (Brent/WTI/gas) | 50.031 obs |
 | BCRA | Reservas, TC mayorista/minorista, BADLAR, base monetaria, IPC | 10.238 obs |
 | INDEC | IPC nivel general, EMAE | 377 obs |
+
+> **Precios de crudo — tres series distintas, no confundir:**
+> - **WTI spot diario** (EIA/FRED): precio de mercado en tiempo real con ~días de rezago. Es el que muestra la tarjeta "WTI spot" del resumen.
+> - **Pink Sheet WB**: promedio *mensual* con rezago de ~1 mes. Útil para series largas y comparación con otros commodities.
+> - **Precio internacional Dec. 488/2020** (Sec. Energía): precio de *referencia* para el cálculo de regalías, no es spot de mercado.
+
+### Refresco de datos
+
+Las fuentes que cambian seguido (`wb_commodity_prices`, `precio_internacional_crudo`, `wti_spot_diario`) están marcadas con `refresh=True` en `src/sources.py` y se **re-descargan en cada corrida** de `python -m src.ingest`. El resto (producción, pozos, etc.) se cachea en `raw/` y solo se baja si falta.
 
 ## Quickstart
 
