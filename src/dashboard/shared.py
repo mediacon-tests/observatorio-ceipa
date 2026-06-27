@@ -43,7 +43,7 @@ def _ensure_db() -> None:
         import urllib3
 
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-        with st.spinner("Descargando warehouse (primer arranque, ~450 MB)…"):
+        with st.spinner("Descargando warehouse (primer arranque)…"):
             with requests.get(DB_URL, stream=True, timeout=900, verify=False) as r:
                 r.raise_for_status()
                 tmp = DB_PATH.with_suffix(".tmp")
